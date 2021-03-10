@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: Test API
+  version: 0.0.1
+servers:
+- url: https://example.com/v1
+paths:
+  /payemnt_providers:
+    get:
+      description: Returns a list of payment providers
+      operationId: payemnt_providers_get
+      responses:
+        "200":
+          description: List of payment providers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentProvider'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    post:
+      description: Create a new Payment Provider
+      operationId: payemnt_providers_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentProvider'
+        required: true
+      responses:
+        "200":
+          description: Successfully created a new payment provider
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /payment_provider/{provider_name}:
+    get:
+      description: Obtain information about a payment provider
+      operationId: payment_provider_provider_name_get
+      parameters:
+      - name: provider_name
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully returned a payment provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentProvider'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    put:
+      description: Update a payment provider
+      operationId: payment_provider_provider_name_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentProvider'
+        required: true
+      parameters:
+      - name: provider_name
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully updated a payment provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentProvider'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    delete:
+      description: Removes a payment provider
+      operationId: payment_provider_provider_name_delete
+      parameters:
+      - name: provider_name
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully deleted a payment provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentProvider'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    PaymentProvider:
+      required:
+      - provider_name
+      - provider_url
+      - is_enabled
+      type: object
+      properties:
+        provider_name:
+          type: string
+        provider_url:
+          type: string
+        is_enabled:
+          type: boolean
+      example:
+        provider_name: "paypal"
+        provider_url: "http://example.com"
+        is_enabled: true
+    inline_response_400:
+      type: object
+      properties:
+        message:
+          type: string
+  responses:
+    "400Error":
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_400'
+    "404Error":
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_response_400'

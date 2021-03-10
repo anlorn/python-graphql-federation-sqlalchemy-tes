@@ -1,0 +1,16 @@
+{
+	"name": "providers",
+	"scripts": {
+		"start": "node index.ts"
+	},
+	"dependencies": {
+		"@apollo/federation": "latest",
+		"apollo-server": "latest",
+		"graphql": "latest",
+		"swagger-to-graphql": "latest",
+		"graphql-transform-federation": "latest",
+        "typescript": "latest",
+        "ts-node": "latest" 
+
+	}
+}
